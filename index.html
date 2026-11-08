@@ -15,14 +15,15 @@
    databaseURL 줄이 꼭 있어야 합니다.
    ===================================================================== */
 const firebaseConfig = {
-    apiKey: "AIzaSyAzNhkFO8L5y_10YGk5UJWqEdYDLI8CTGI",
-    authDomain: "multiplying-decimals.firebaseapp.com",
-    databaseURL: "https://multiplying-decimals-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "multiplying-decimals",
-    storageBucket: "multiplying-decimals.firebasestorage.app",
-    messagingSenderId: "425893852691",
-    appId: "1:425893852691:web:1802d7efd88938c34a31e6"
-  };</script>
+  apiKey: "AIzaSyAzNhkFO8L5y_10YGk5UJWqEdYDLI8CTGI",
+  authDomain: "multiplying-decimals.firebaseapp.com",
+  databaseURL: "https://multiplying-decimals-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "multiplying-decimals",
+  storageBucket: "multiplying-decimals.firebasestorage.app",
+  messagingSenderId: "425893852691",
+  appId: "1:425893852691:web:1802d7efd88938c34a31e6"
+};
+</script>
 <style>
   :root{
     --bg:#fdf6e9; --ink:#2b2b3a; --muted:#7a7a8c;
@@ -340,12 +341,11 @@ function teacherSetup(){
       <div class="lessons" id="lessons">${Object.keys(LESSONS).map(k=>`<button class="lesson ${+k===selLesson?'on':''}" data-l="${k}"><b>${k}차시</b>${LESSONS[k].name}</button>`).join('')}</div>
       <label>예시 문제</label>
       <div id="sample" style="font-family:'Courier New',monospace;font-weight:700;font-size:22px"></div>
-      <div class="switch"><input type="checkbox" id="showPts"><label for="showPts" style="margin:0;font-family:'Gowun Dodum';font-size:18px">배점을 문제와 함께 미리 보여주기 (끄면 정답 공개 때 깜짝 공개)</label></div>
       <label>진행 방법</label>
       <ol class="ruleslist">
         <li>학생은 방 코드와 <b>번호</b>로 들어와요.</li>
         <li>문제마다 A, B 중 <b>한 문제만</b> 골라 답을 제출해요.</li>
-        <li>선생님이 <b>정답 공개</b>를 누르면 모든 화면에 정답·배점·결과가 나와요. (자동 채점)</li>
+        <li>배점은 숨겨져 있다가, 선생님이 <b>정답 공개</b>를 누르면 정답과 함께 공개돼요. (자동 채점)</li>
         <li>선생님이 <b>다음 문제</b>를 눌러야 학생 화면도 넘어가요.</li>
       </ol>
       <label>문제별 배점 (높은 점수가 A일지 B일지는 매번 랜덤)</label>
@@ -377,7 +377,7 @@ function teacherSetup(){
       }while(++tries < 20);
       await db.ref('rooms/'+code).set({
         created: Date.now(), phase:'lobby', qi:0,
-        lesson: selLesson, showPts: $('showPts').checked, questions: makeQuestions(selLesson)
+        lesson: selLesson, showPts: false, questions: makeQuestions(selLesson)
       });
       store.set('dm_teacher_room', code);
       teacherEnter(code);
